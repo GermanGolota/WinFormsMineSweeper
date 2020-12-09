@@ -13,21 +13,33 @@ namespace WinFormsMineSweeper
 {
     public partial class Minesweeper : Form
     {
-        Graphics g;
-        int width = 10;
-        int height = 10;
-        int size = 800;
-        Point Starting = new Point(120, 100);
-        int mineCount =15;
-        MinesweeperGame game;
+        private Graphics g;
+        private MinesweeperGame game;
+        private int FlagCount;
+        private int mineCount = 15;
         public Minesweeper()
         {
             InitializeComponent();
             WindowState = FormWindowState.Maximized;
             g = this.CreateGraphics();
-            game = new MinesweeperGame(this, width, height,mineCount, size, Starting);
+
+            FlagCount = mineCount;
+
+            game = new MinesweeperGame(this, 10, 10,mineCount, 800, new Point(120, 150));
             game.PlayerLost += Game_PlayerLost;
             game.PlayerWon += Game_PlayerWon;
+            game.FlagPlaced += Game_FlagPlaced;
+        }
+
+        private void UpdateFlagCount()
+        {
+            this.MinesLabel.Text = this.FlagCount.ToString();
+        }
+
+        private void Game_FlagPlaced(object sender, EventArgs e)
+        {
+            FlagCount--;
+            UpdateFlagCount();
         }
 
         private void Game_PlayerWon(object sender, EventArgs e)
@@ -40,9 +52,13 @@ namespace WinFormsMineSweeper
             MessageBox.Show("You have lost, congratulations!!!");
         }
 
-        private void button1_Click(object sender, EventArgs e)
+        private void StartButton_Click(object sender, EventArgs e)
         {
             game.StartNewGame();
+            Flag flag = new Flag(100, new Point(50, 20));
+            flag.Draw(g);
+            FlagCount = mineCount;
+            UpdateFlagCount();
         }
     }
 }

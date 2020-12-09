@@ -9,6 +9,8 @@ namespace WinFormsMineSweeper
 {
     public class Cell:Drawing
     {
+
+        public event EventHandler FlagSuccesfullyPlaced;
         public int X { get; set; }
         public int Y { get; set; }
         public CellState State { get; set; }
@@ -71,6 +73,7 @@ namespace WinFormsMineSweeper
             switch (this.State)
             {
                 case CellState.Covered:
+                    FlagSuccesfullyPlaced?.Invoke(this,EventArgs.Empty);
                     this.State = CellState.Flag;
                     this.Draw(g);
                     break;

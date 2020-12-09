@@ -11,6 +11,8 @@ namespace WinFormsMineSweeper
     {
         public event EventHandler PlayerLost;
         public event EventHandler PlayerWon;
+        public event EventHandler FlagPlaced;
+
         private bool GameOver = false;
         private Graphics g;
         private int width;
@@ -21,6 +23,7 @@ namespace WinFormsMineSweeper
         private int mineCount;
         public MinesweeperGame(Form displayForm, int width, int height, int mineCount, int Size, Point StartingPoint)
         {
+            
             this.g = displayForm.CreateGraphics();
             this.width = width;
             this.height = height;
@@ -28,7 +31,13 @@ namespace WinFormsMineSweeper
             this.size = Size;
             this.Starting = StartingPoint;
             this.board = new Board(width, height, mineCount, size, Starting, g);
+            this.board.FlagPlaced += Minesweeper_FlagPlaced;
             displayForm.MouseClick += Minesweeper_MouseClick;
+        }
+
+        private void Minesweeper_FlagPlaced(object sender, EventArgs e)
+        {
+            this.FlagPlaced?.Invoke(this, EventArgs.Empty);
         }
 
         private void Minesweeper_MouseClick(object sender, MouseEventArgs e)
@@ -135,6 +144,7 @@ namespace WinFormsMineSweeper
             this.GameOver = false;
             this.board = new Board(width, height, mineCount, size, Starting, g);
             this.board.Draw(g);
+            this.board.FlagPlaced += Minesweeper_FlagPlaced;
         }
     }
 }

@@ -8,6 +8,8 @@ namespace WinFormsMineSweeper
 {
     public class Board:Drawing
     {
+        public event EventHandler FlagPlaced;
+
         public Graphics g;
         public int width { get; set; }
         public int height { get; set; }
@@ -52,7 +54,20 @@ namespace WinFormsMineSweeper
                     this[i, j].SetNeighbours(this);
                 }
             }
+            for (int i = 0; i < width; i++)
+            {
+                for (int j = 0; j < height; j++)
+                {
+                    this[i, j].FlagSuccesfullyPlaced += Board_FlagSuccessfullyPlaced;
+                }
+            }
         }
+
+        private void Board_FlagSuccessfullyPlaced(object sender, EventArgs e)
+        {
+            this.FlagPlaced?.Invoke(this,EventArgs.Empty);
+        }
+
         private bool SetMine()
         {
             Random rng = new Random();
