@@ -29,6 +29,13 @@ namespace WinFormsMineSweeper
             game.PlayerLost += Game_PlayerLost;
             game.PlayerWon += Game_PlayerWon;
             game.FlagPlaced += Game_FlagPlaced;
+            game.FlagDeleted += Game_FlagDeleted;
+        }
+
+        private void Game_FlagDeleted(object sender, EventArgs e)
+        {
+            FlagCount++;
+            UpdateFlagCount();
         }
 
         private void UpdateFlagCount()

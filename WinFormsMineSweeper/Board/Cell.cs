@@ -11,6 +11,7 @@ namespace WinFormsMineSweeper
     {
 
         public event EventHandler FlagSuccesfullyPlaced;
+        public event EventHandler FlagDeleted;
         public int X { get; set; }
         public int Y { get; set; }
         public CellState State { get; set; }
@@ -79,6 +80,7 @@ namespace WinFormsMineSweeper
                     break;
                 case CellState.Flag:
                     this.State = CellState.Covered;
+                    FlagDeleted?.Invoke(this,EventArgs.Empty);
                     this.Draw(g);
                     break;
                 default:

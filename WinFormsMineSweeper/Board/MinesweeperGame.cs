@@ -12,6 +12,7 @@ namespace WinFormsMineSweeper
         public event EventHandler PlayerLost;
         public event EventHandler PlayerWon;
         public event EventHandler FlagPlaced;
+        public event EventHandler FlagDeleted;
 
         private bool GameOver = false;
         private Graphics g;
@@ -145,6 +146,12 @@ namespace WinFormsMineSweeper
             this.board = new Board(width, height, mineCount, size, Starting, g);
             this.board.Draw(g);
             this.board.FlagPlaced += Minesweeper_FlagPlaced;
+            this.board.FlagDeleted += Minesweeper_FlagDeleted;
+        }
+
+        private void Minesweeper_FlagDeleted(object sender, EventArgs e)
+        {
+            this.FlagDeleted?.Invoke(this,EventArgs.Empty);
         }
     }
 }

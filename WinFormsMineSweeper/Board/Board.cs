@@ -9,6 +9,7 @@ namespace WinFormsMineSweeper
     public class Board:Drawing
     {
         public event EventHandler FlagPlaced;
+        public event EventHandler FlagDeleted;
 
         public Graphics g;
         public int width { get; set; }
@@ -59,8 +60,14 @@ namespace WinFormsMineSweeper
                 for (int j = 0; j < height; j++)
                 {
                     this[i, j].FlagSuccesfullyPlaced += Board_FlagSuccessfullyPlaced;
+                    this[i, j].FlagDeleted += Board_FlagDeleted;
                 }
             }
+        }
+
+        private void Board_FlagDeleted(object sender, EventArgs e)
+        {
+            FlagDeleted?.Invoke(this, EventArgs.Empty);
         }
 
         private void Board_FlagSuccessfullyPlaced(object sender, EventArgs e)
