@@ -26,8 +26,19 @@ namespace WinFormsMineSweeper
             WindowState = FormWindowState.Maximized;
             g = this.CreateGraphics();
             game = new MinesweeperGame(this, width, height,mineCount, size, Starting);
+            game.PlayerLost += Game_PlayerLost;
+            game.PlayerWon += Game_PlayerWon;
         }
 
+        private void Game_PlayerWon(object sender, EventArgs e)
+        {
+            MessageBox.Show("You have won, congratulations!!!");
+        }
+
+        private void Game_PlayerLost(object sender, EventArgs e)
+        {
+            MessageBox.Show("You have lost, congratulations!!!");
+        }
 
         private void button1_Click(object sender, EventArgs e)
         {
