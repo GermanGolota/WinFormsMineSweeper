@@ -81,6 +81,17 @@ namespace WinFormsMineSweeper
                                 if (board[i, j].IsMine)
                                 {
                                     GameOver = true;
+                                    for (int n = 0; n < width; n++)
+                                    {
+                                        for (int m = 0; m < height; m++)
+                                        {
+                                            if (board[n, m].IsMine)
+                                            {
+                                                board[n, m].State = Enums.CellState.Mine;
+                                                board[n, m].Draw(g);
+                                            }
+                                        }
+                                    }
                                     PlayerLost?.Invoke(this, EventArgs.Empty);
                                     return;
                                 }

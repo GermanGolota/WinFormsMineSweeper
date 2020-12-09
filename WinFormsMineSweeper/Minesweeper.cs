@@ -17,7 +17,7 @@ namespace WinFormsMineSweeper
         int width = 10;
         int height = 10;
         int size = 800;
-        Point Starting = new Point(20, 100);
+        Point Starting = new Point(120, 100);
         int mineCount =15;
         MinesweeperGame game;
         public Minesweeper()

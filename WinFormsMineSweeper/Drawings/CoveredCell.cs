@@ -13,6 +13,11 @@ namespace WinFormsMineSweeper.Drawings
         }
         public override void Draw(Graphics g)
         {
+            SolidBrush whiteBrush = new SolidBrush(Color.White);
+            Rectangle rect = new Rectangle(this.StartingPoint, new Size(this.size, this.size));
+
+            g.FillRectangle(whiteBrush, rect);
+
             DrawHelper.DrawCorners(g, this.StartingPoint, this.size);
 
             SolidBrush brush = new SolidBrush(Color.Gray);
