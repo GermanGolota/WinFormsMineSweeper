@@ -17,7 +17,9 @@ namespace WinFormsMineSweeper
             Application.SetHighDpiMode(HighDpiMode.SystemAware);
             Application.EnableVisualStyles();
             Application.SetCompatibleTextRenderingDefault(false);
-            Application.Run(new Minesweeper());
+
+            IDifficultiesParser parser = new MockDifficultyParser();
+            Application.Run(new OptionsSelectionForm(parser));
         }
     }
 }
