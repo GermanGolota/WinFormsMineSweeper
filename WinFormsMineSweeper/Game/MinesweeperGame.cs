@@ -4,6 +4,7 @@ using System.Drawing;
 using System.Linq;
 using System.Text;
 using System.Windows.Forms;
+using WinFormsMineSweeper.Game;
 
 namespace WinFormsMineSweeper
 {
@@ -16,22 +17,17 @@ namespace WinFormsMineSweeper
 
         private bool GameOver = false;
         private Graphics g;
-        private int width;
-        private int height;
-        private int size;
+        public int Size { get; set; }
+        public GameSettings Settings { get; set; }
         private Point Starting;
         private Board board;
-        private int mineCount;
-        public MinesweeperGame(Form displayForm, int width, int height, int mineCount, int Size, Point StartingPoint)
+        public MinesweeperGame(Form displayForm, GameSettings settings, int Size, Point StartingPoint)
         {
-            
             this.g = displayForm.CreateGraphics();
-            this.width = width;
-            this.height = height;
-            this.mineCount = mineCount;
-            this.size = Size;
+            this.Settings = settings;
+            this.Size = Size;
             this.Starting = StartingPoint;
-            this.board = new Board(width, height, mineCount, size, Starting, g);
+            this.board = new Board(Settings.Width, Settings.Height, Settings.MineCount, Size, Starting, g);
             this.board.FlagPlaced += Minesweeper_FlagPlaced;
             displayForm.MouseClick += Minesweeper_MouseClick;
         }
@@ -46,15 +42,15 @@ namespace WinFormsMineSweeper
             if (!GameOver)
             {
                 int x = e.X; int y = e.Y;
-                bool FitsByX = (x <= Starting.X + size && x >= Starting.X);
-                bool FitsByY = (y <= Starting.Y + size && y >= Starting.Y);
+                bool FitsByX = (x <= Starting.X + this.Size && x >= Starting.X);
+                bool FitsByY = (y <= Starting.Y + this.Size && y >= Starting.Y);
 
                 if (FitsByX && FitsByY)
                 {
                     bool isLeft = e.Button.Equals(MouseButtons.Left);
                     bool isRight = e.Button.Equals(MouseButtons.Right);
                     bool isMiddle = e.Button.Equals(MouseButtons.Middle);
-                    int CellSize = size / width;
+                    int CellSize = this.Size / this.Settings.Width;
                     int i = (x - Starting.X) / CellSize;
                     int j = (y - Starting.Y) / CellSize;
                     if (isMiddle)
@@ -91,9 +87,9 @@ namespace WinFormsMineSweeper
                                 if (board[i, j].IsMine)
                                 {
                                     GameOver = true;
-                                    for (int n = 0; n < width; n++)
+                                    for (int n = 0; n < this.Settings.Width; n++)
                                     {
-                                        for (int m = 0; m < height; m++)
+                                        for (int m = 0; m < this.Settings.Height; m++)
                                         {
                                             if (board[n, m].IsMine)
                                             {
@@ -121,9 +117,9 @@ namespace WinFormsMineSweeper
                     }
                 }
                 int CoveredCount = 0;
-                for (int i = 0; i < width; i++)
+                for (int i = 0; i < this.Settings.Width; i++)
                 {
-                    for (int j = 0; j < height; j++)
+                    for (int j = 0; j < this.Settings.Height; j++)
                     {
                         if (!board[i, j].IsMine&&board[i,j].State.Equals(Enums.CellState.Covered))
                         {
@@ -143,7 +139,7 @@ namespace WinFormsMineSweeper
         public void StartNewGame()
         {
             this.GameOver = false;
-            this.board = new Board(width, height, mineCount, size, Starting, g);
+            this.board = new Board(Settings.Width, Settings.Height, Settings.MineCount, Size, Starting, g);
             this.board.Draw(g);
             this.board.FlagPlaced += Minesweeper_FlagPlaced;
             this.board.FlagDeleted += Minesweeper_FlagDeleted;
