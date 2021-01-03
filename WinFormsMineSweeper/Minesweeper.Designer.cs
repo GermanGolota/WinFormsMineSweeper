@@ -31,6 +31,7 @@ namespace WinFormsMineSweeper
         {
             this.StartButton = new System.Windows.Forms.Button();
             this.MinesLabel = new System.Windows.Forms.Label();
+            this.DifficultyButton = new System.Windows.Forms.Button();
             this.SuspendLayout();
             // 
             // StartButton
@@ -52,11 +53,22 @@ namespace WinFormsMineSweeper
             this.MinesLabel.Size = new System.Drawing.Size(0, 86);
             this.MinesLabel.TabIndex = 1;
             // 
+            // DifficultyButton
+            // 
+            this.DifficultyButton.Location = new System.Drawing.Point(778, 12);
+            this.DifficultyButton.Name = "DifficultyButton";
+            this.DifficultyButton.Size = new System.Drawing.Size(159, 100);
+            this.DifficultyButton.TabIndex = 2;
+            this.DifficultyButton.Text = "To difficulty selection";
+            this.DifficultyButton.UseVisualStyleBackColor = true;
+            this.DifficultyButton.Click += new System.EventHandler(this.DifficultyButton_Click);
+            // 
             // Minesweeper
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(7F, 15F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(1217, 568);
+            this.ClientSize = new System.Drawing.Size(1226, 568);
+            this.Controls.Add(this.DifficultyButton);
             this.Controls.Add(this.MinesLabel);
             this.Controls.Add(this.StartButton);
             this.Name = "Minesweeper";
@@ -70,6 +82,7 @@ namespace WinFormsMineSweeper
 
         private System.Windows.Forms.Button StartButton;
         private System.Windows.Forms.Label MinesLabel;
+        private System.Windows.Forms.Button DifficultyButton;
     }
 }
 

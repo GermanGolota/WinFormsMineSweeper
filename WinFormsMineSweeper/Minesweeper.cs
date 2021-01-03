@@ -8,6 +8,7 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
 using WinFormsMineSweeper.Drawings;
+using WinFormsMineSweeper.Game;
 
 namespace WinFormsMineSweeper
 {
@@ -16,16 +17,24 @@ namespace WinFormsMineSweeper
         private Graphics g;
         private MinesweeperGame game;
         private int FlagCount;
-        private int mineCount = 15;
-        public Minesweeper()
+        public GameSettings Settings { get; }
+        public OptionsSelectionForm OptionsForm { get; }
+
+        public Minesweeper(GameSettings settings, OptionsSelectionForm optionsForm)
         {
             InitializeComponent();
             WindowState = FormWindowState.Maximized;
             g = this.CreateGraphics();
 
-            FlagCount = mineCount;
 
-            game = new MinesweeperGame(this, 10, 10,mineCount, 800, new Point(120, 150));
+            Settings = settings;
+            OptionsForm = optionsForm;
+
+            FlagCount = settings.MineCount;
+            Point startingPoint = new Point(120, 150);
+            int Size = 800;
+
+            game = new MinesweeperGame(this, settings, Size, startingPoint);
             game.PlayerLost += Game_PlayerLost;
             game.PlayerWon += Game_PlayerWon;
             game.FlagPlaced += Game_FlagPlaced;
@@ -64,8 +73,14 @@ namespace WinFormsMineSweeper
             game.StartNewGame();
             Flag flag = new Flag(100, new Point(50, 20));
             flag.Draw(g);
-            FlagCount = mineCount;
+            FlagCount = Settings.MineCount;
             UpdateFlagCount();
+        }
+
+        private void DifficultyButton_Click(object sender, EventArgs e)
+        {
+            OptionsForm.Show();
+            this.Close();
         }
     }
 }
