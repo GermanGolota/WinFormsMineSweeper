@@ -25,20 +25,59 @@ namespace WinFormsMineSweeper
             InitializeComponent();
             WindowState = FormWindowState.Maximized;
             g = this.CreateGraphics();
-
+            this.FormClosed += Minesweeper_FormClosed;
 
             Settings = settings;
             OptionsForm = optionsForm;
-
             FlagCount = settings.MineCount;
-            Point startingPoint = new Point(120, 150);
-            int Size = 800;
 
-            game = new MinesweeperGame(this, settings, Size, startingPoint);
+            Point startingPoint = new Point(120, 150);
+            int xSize = 800;
+            int cellSize = xSize / settings.Width;
+            int ySize = cellSize * settings.Height;
+
+            ResizeFormToMatchBoard(startingPoint, xSize, ySize);
+
+            game = new MinesweeperGame(this, settings, xSize, startingPoint);
             game.PlayerLost += Game_PlayerLost;
             game.PlayerWon += Game_PlayerWon;
             game.FlagPlaced += Game_FlagPlaced;
             game.FlagDeleted += Game_FlagDeleted;
+        }
+
+        private void ResizeFormToMatchBoard(Point startingPoint, int xSize, int ySize)
+        {
+            Size offset = new Size(120,120);
+
+            int xRight = startingPoint.X + xSize;
+            int yBottom = startingPoint.Y + ySize;
+
+            int sizeX = this.Width;
+            int sizeY = this.Height;
+
+            if (xRight>this.Width)
+            {
+                sizeX = xRight + offset.Width;
+                if (yBottom>this.Height)
+                {
+                    sizeY = yBottom + offset.Height;
+                }
+            }
+            else
+            {
+                if (yBottom > this.Height)
+                {
+                    sizeY = yBottom + offset.Height;
+                }
+            }
+
+            Size newSize = new Size(sizeX, sizeY);
+            this.Size = newSize;
+        }
+
+        private void Minesweeper_FormClosed(object sender, FormClosedEventArgs e)
+        {
+            Application.Exit();
         }
 
         private void Game_FlagDeleted(object sender, EventArgs e)
